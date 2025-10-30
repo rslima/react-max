@@ -4,18 +4,21 @@ import Player from './components/Player';
 import Log from './components/Log';
 import { WINNING_COMBINATIONS } from './winning-combinations';
 
+function getActivePlayer(moves) {
+  if (moves.length === 0) {
+    return 'X';
+  }
+  return moves[0].player === 'X' ? 'O' : 'X';
+}
+
 function App() {
   const [gameMoves, setGameMoves] = useState([]);
-  const [activePlayer, setActivePlayer] = useState('X');
+
+  const activePlayer = getActivePlayer(gameMoves);
 
   function handleSelectSquare(rowIndex, cellIndex) {
-    setActivePlayer(prevPlayer => (prevPlayer === 'X' ? 'O' : 'X'));
     setGameMoves(prevMoves => {
-      let currentPlayer = 'X';
-
-      if (prevMoves.length > 0 && prevMoves[0].player === 'X') {
-        currentPlayer = 'O';
-      }
+      const currentPlayer = getActivePlayer(prevMoves);
 
       return [
         { player: currentPlayer, square: { row: rowIndex, col: cellIndex } },
